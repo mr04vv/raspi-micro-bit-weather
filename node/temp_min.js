@@ -10,7 +10,7 @@ var appid = 'b6fa337cd031a676c7949c63525dd096';
 
 var URL = 'http://api.openweathermap.org/data/2.5/weather?id='+ id +'&appid='+ appid;
 
-var R="";
+var R='';
 
 
 http.get(URL, function(res) {
@@ -21,49 +21,18 @@ http.get(URL, function(res) {
   });
   res.on('data', function(chunk) {
     res = JSON.parse(body);
-    R = res.weather[0].main;
-    weather(R)
-    //console.log(res.weather[0].main);
-    console.log(res);
+    R = (res.main.temp_min-273.15).toFixed(1);
+    // R = '2.2';
+    R = R.toString();
+    temp_min(R)
+    // console.log(res.weather[0].main);
+
   });
 }).on('error', function(e) {
   console.log(e.message);
 });
 
-var PATTERNS = [
-  {
-    name: 'Clouds',
-    value: new Buffer('000609110E', 'hex')
-  },
-  {
-    name: 'Thunderstorm',
-    value: new Buffer('060C060C08', 'hex')
-  },
-  {
-    name: 'Snow',
-    value: new Buffer('150E040E15', 'hex')
-  },
-  {
-    name: 'Clear',
-    value: new Buffer('0E1F1F1F0E', 'hex')
-  },
-  {
-    name: 'Rain',
-    value: new Buffer('040E1F040C', 'hex')
-  },
-];
-
- // choose a random pattern
-
-
-// search for a micro:bit, to discover a particular micro:bit use:
-//  BBCMicrobit.discoverById(id, callback); or BBCMicrobit.discoverByAddress(id, callback);
-function weather(str){
-  for(var i=0;i<PATTERNS.length;i++){
-    if(str==PATTERNS[i].name){
-      var pattern = PATTERNS[i];
-    }
-  }
+function temp_min(){
 
   console.log('Scanning for microbit');
   BBCMicrobit.discover(function(microbit) {
@@ -78,8 +47,8 @@ function weather(str){
     microbit.connectAndSetUp(function() {
       console.log('\tconnected to microbit');
 
-      console.log('sending pattern: "%s"', pattern.name);
-      microbit.writeLedMatrixState(pattern.value, function() {
+      console.log('sending pattern: "%s"', R);
+      microbit.writeLedText(R, function() {
         console.log('\tpattern sent');
 
         console.log('disconnecting');
