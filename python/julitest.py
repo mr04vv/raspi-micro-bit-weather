@@ -10,6 +10,9 @@ import string
 import subprocess
 #import tv_off
 import weather
+import temp_now as now
+import temp_min as min
+import temp_max as max
 import os
 
 host = 'localhost'   # Raspberry PiのIPアドレス
@@ -41,13 +44,13 @@ while True:
     if strTemp == "きょうのてんき":  # if you say Hikaregoma, led will turn on
         #os.system('sudo python ~/irmcli/irmcli.py -p -f ~/irmcli/light_on.json')
 	weather.main()
-    if strTemp == "けして":
+    if strTemp == "さいこうきおん":
         #os.system('sudo python ~/irmcli/irmcli.py -p -f ~/irmcli/light_off.json')
-	off.main()
-    if strTemp == "てんめつ":
-        flash.main()
-    #if strTemp == "てれびつけて":
-        #ty_on.main()
+	max.main()
+    if strTemp == "さいていきおん":
+        min.main()
+    if strTemp == "いまのきおん":
+        now.main()
     #if strTemp == "てれびけして":
         #tv_off.main()
     data = ""

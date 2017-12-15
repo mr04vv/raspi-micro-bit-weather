@@ -1,14 +1,6 @@
-var http = require('http');
+var http = require('https');
 var BBCMicrobit = require('../../node_modules/bbc-microbit/index');
-var text = 'Hello there';
-
-var id = '1864518'; //chofu
-// var id ='2111149'; //sendai
-// var id = '2128295'; //sapporo
-// var id = '5128581'; //new york
-var appid = 'b6fa337cd031a676c7949c63525dd096';
-
-var URL = 'http://api.openweathermap.org/data/2.5/weather?id='+ id +'&appid='+ appid;
+var URL = 'https://api.darksky.net/forecast/4eb0193101f78ec1a10d7e873afabfa5/35.3922,139.3226?exclude=alerts,flags,hourly,minutely';
 
 var R='';
 
@@ -21,11 +13,9 @@ http.get(URL, function(res) {
   });
   res.on('data', function(chunk) {
     res = JSON.parse(body);
-    R = (res.main.temp_min-273.15).toFixed(1);
-    // R = '2.2';
+    R = ((res.daily.data[0].temperatureMin-32)/1.8).toFixed(1);
     R = R.toString();
     temp_min(R)
-    // console.log(res.weather[0].main);
 
   });
 }).on('error', function(e) {
